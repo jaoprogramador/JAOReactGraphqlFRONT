@@ -55,7 +55,7 @@ export default RecommendationBooks;
  */
 import { useQuery, useLazyQuery } from '@apollo/client';
 import { GET_BOOKS_BY_GENRE, GET_USER_FAVORITE_GENRE } from '../graphql/queries';
-
+import {  useEffect } from 'react';
 const RecommendationBooks = () => {
   const { data: userData, loading: userLoading, error: userError } = useQuery(GET_USER_FAVORITE_GENRE);
   const [getBooksByGenre, { data, loading, error }] = useLazyQuery(GET_BOOKS_BY_GENRE);
