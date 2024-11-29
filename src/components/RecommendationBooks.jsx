@@ -63,11 +63,18 @@ const RecommendationBooks = () => {
   const favoriteGenre = userData?.me?.favoriteGenre;
 
   // Ejecuta la consulta de libros cuando el género favorito esté disponible
-  React.useEffect(() => {
+  useEffect(() => {
+    console.log("books", data);
     if (favoriteGenre) {
       getBooksByGenre({ variables: { genre: favoriteGenre } });
     }
-  }, [favoriteGenre, getBooksByGenre]);
+  },[favoriteGenre, getBooksByGenre]);
+
+  /* React.useEffect(() => {
+    if (favoriteGenre) {
+      getBooksByGenre({ variables: { genre: favoriteGenre } });
+    }
+  }, [favoriteGenre, getBooksByGenre]); */
 
   if (userLoading || loading) return <p>Cargando...</p>;
   if (userError || error) return <p>Error: {userError?.message || error?.message}</p>;
