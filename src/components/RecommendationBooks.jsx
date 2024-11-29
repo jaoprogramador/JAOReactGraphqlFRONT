@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/client';
+/* import { useQuery } from '@apollo/client';
 import { GET_BOOKS_BY_GENRE, GET_USER_FAVORITE_GENRE } from '../graphql/queries';
 
 const RecommendationBooks = () => {
@@ -9,10 +9,10 @@ const RecommendationBooks = () => {
   const favoriteGenre = userData?.me?.favoriteGenre;
   
   // Realizar la consulta para obtener los libros por el género favorito
-  /* const { data, loading, error } = useQuery(GET_BOOKS_BY_GENRE, {
+  const { data, loading, error } = useQuery(GET_BOOKS_BY_GENRE, {
     variables: { genre: favoriteGenre },
     skip: !favoriteGenre, // Omitir la consulta si el género favorito no está disponible
-  }); */
+  }); 
 
   if (userLoading || loading) return <p>Cargando...</p>;
   if (userError || error) return <p>Error: {userError?.message || error?.message}</p>;
@@ -40,6 +40,59 @@ const RecommendationBooks = () => {
                 <td>{book.title}</td>
                 <td>{book.published}</td>
                 <td>{book.author.name}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <p>No se encontraron libros recomendados para este género.</p>
+      )}
+    </div>
+  );
+};
+
+export default RecommendationBooks;
+ */
+import { useQuery, useLazyQuery } from '@apollo/client';
+import { GET_BOOKS_BY_GENRE, GET_USER_FAVORITE_GENRE } from '../graphql/queries';
+
+const RecommendationBooks = () => {
+  const { data: userData, loading: userLoading, error: userError } = useQuery(GET_USER_FAVORITE_GENRE);
+  const [getBooksByGenre, { data, loading, error }] = useLazyQuery(GET_BOOKS_BY_GENRE);
+
+  const favoriteGenre = userData?.me?.favoriteGenre;
+
+  // Ejecuta la consulta de libros cuando el género favorito esté disponible
+  React.useEffect(() => {
+    if (favoriteGenre) {
+      getBooksByGenre({ variables: { genre: favoriteGenre } });
+    }
+  }, [favoriteGenre, getBooksByGenre]);
+
+  if (userLoading || loading) return <p>Cargando...</p>;
+  if (userError || error) return <p>Error: {userError?.message || error?.message}</p>;
+
+  const recommendedBooks = data?.allBooks || [];
+
+  return (
+    <div>
+      <h2>Libros recomendados</h2>
+      <p>Género favorito: {favoriteGenre || 'No definido, por favor selecciona uno en tu perfil.'}</p>
+      {recommendedBooks.length > 0 ? (
+        <table>
+          <thead>
+            <tr>
+              <th>Título</th>
+              <th>Año de publicación</th>
+              <th>Autor</th>
+            </tr>
+          </thead>
+          <tbody>
+            {recommendedBooks.map((book, index) => (
+              <tr key={book.id || `${book.title}-${index}`}>
+                <td>{book.title}</td>
+                <td>{book.published}</td>
+                <td>{book.author?.name || 'Autor desconocido'}</td>
               </tr>
             ))}
           </tbody>
