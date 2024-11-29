@@ -9,10 +9,10 @@ const RecommendationBooks = () => {
   const favoriteGenre = userData?.me?.favoriteGenre;
   
   // Realizar la consulta para obtener los libros por el género favorito
-  const { data, loading, error } = useQuery(GET_BOOKS_BY_GENRE, {
+  /* const { data, loading, error } = useQuery(GET_BOOKS_BY_GENRE, {
     variables: { genre: favoriteGenre },
     skip: !favoriteGenre, // Omitir la consulta si el género favorito no está disponible
-  });
+  }); */
 
   if (userLoading || loading) return <p>Cargando...</p>;
   if (userError || error) return <p>Error: {userError?.message || error?.message}</p>;
