@@ -136,6 +136,7 @@ const RecommendationBooks = ({ show }) => {
   if (bookError) return <p>Error al cargar libros: {bookError.message}</p>;
 
   const recommendedBooks = bookData?.allBooks || [];
+  console.log('RecommendationBooks:::recommendedBooks',recommendedBooks);
 
   return (
     <div>
