@@ -116,16 +116,16 @@ import { GET_BOOKS_BY_GENRE, GET_USER_FAVORITE_GENRE } from '../graphql/queries'
 const RecommendationBooks = ({ show }) => {
   const token = localStorage.getItem('user-token');
   console.log('RecommendationBooks:::token',token);
-  if (!show) return null; // Solo renderiza si está visible
-  if (!token) return <p>Error: Usuario no autenticado.</p>; // Maneja usuarios no autenticados
+  //if (!show) return null; // Solo renderiza si está visible
+  //if (!token) return <p>Error: Usuario no autenticado.</p>; // Maneja usuarios no autenticados
 
   const { data: userData, loading: userLoading, error: userError } = useQuery(GET_USER_FAVORITE_GENRE);
 
-  if (userLoading) return <p>Cargando...</p>;
-  if (userError) return <p>Error al cargar el género favorito: {userError.message}</p>;
+  //if (userLoading) return <p>Cargando...</p>;
+  //if (userError) return <p>Error al cargar el género favorito: {userError.message}</p>;
 
   const favoriteGenre = userData?.me?.favoriteGenre;
-  if (!favoriteGenre) return <p>No tienes un género favorito definido.</p>;
+  //if (!favoriteGenre) return <p>No tienes un género favorito definido.</p>;
 
   const { data: bookData, loading: bookLoading, error: bookError } = useQuery(GET_BOOKS_BY_GENRE, {
     variables: { genre: favoriteGenre },
