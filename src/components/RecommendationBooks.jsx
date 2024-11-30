@@ -115,6 +115,7 @@ import { GET_BOOKS_BY_GENRE, GET_USER_FAVORITE_GENRE } from '../graphql/queries'
 
 const RecommendationBooks = ({ show }) => {
   const token = localStorage.getItem('user-token');
+  console.log('RecommendationBooks:::token',token);
   if (!show) return null; // Solo renderiza si está visible
   if (!token) return <p>Error: Usuario no autenticado.</p>; // Maneja usuarios no autenticados
 

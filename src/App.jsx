@@ -13,7 +13,7 @@ const App = () => {
   const [token, setToken] = useState(localStorage.getItem('user-token'))
   const client = useApolloClient()
   const [errorMessage, setErrorMessage] = useState(null)
-  const [page, setPage] = useState("recomendations");
+  const [page, setPage] = useState("authors");
 
 
   const logout = () => {
