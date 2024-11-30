@@ -53,7 +53,9 @@ const RecommendationBooks = () => {
 
 export default RecommendationBooks;
  */
-import { useQuery, useLazyQuery } from '@apollo/client';
+
+//VERSION MAL Error: Not authenticated in recomendatio
+/* import { useQuery, useLazyQuery } from '@apollo/client';
 import { GET_BOOKS_BY_GENRE, GET_USER_FAVORITE_GENRE } from '../graphql/queries';
 import React, { useEffect } from 'react'; 
 const RecommendationBooks = () => {
@@ -70,11 +72,7 @@ const RecommendationBooks = () => {
     }
   },[favoriteGenre, getBooksByGenre]);
 
-  /* React.useEffect(() => {
-    if (favoriteGenre) {
-      getBooksByGenre({ variables: { genre: favoriteGenre } });
-    }
-  }, [favoriteGenre, getBooksByGenre]); */
+ 
 
   if (userLoading || loading) return <p>Cargando...</p>;
   if (userError || error) return <p>Error: {userError?.message || error?.message}</p>;
@@ -97,6 +95,63 @@ const RecommendationBooks = () => {
           <tbody>
             {recommendedBooks.map((book, index) => (
               <tr key={book.id || `${book.title}-${index}`}>
+                <td>{book.title}</td>
+                <td>{book.published}</td>
+                <td>{book.author?.name || 'Autor desconocido'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <p>No se encontraron libros recomendados para este género.</p>
+      )}
+    </div>
+  );
+};
+
+export default RecommendationBooks; */
+import { useQuery } from '@apollo/client';
+import { GET_USER_FAVORITE_GENRE, GET_BOOKS_BY_GENRE } from '../graphql/queries';
+
+const RecommendationBooks = ({ show }) => {
+  // Obtiene el género favorito del usuario
+  const { data: userData, loading: userLoading, error: userError } = useQuery(GET_USER_FAVORITE_GENRE);
+  
+  // Obtiene los libros según el género favorito
+  const favoriteGenre = userData?.me?.favoriteGenre;
+  const { data, loading, error } = useQuery(GET_BOOKS_BY_GENRE, {
+    variables: { genre: favoriteGenre },
+    skip: !favoriteGenre, // Evita ejecutar la consulta si no hay género favorito
+    fetchPolicy: "cache-and-network", // Para asegurar datos actualizados
+  });
+
+  // Si la consulta no debe mostrarse
+  if (!show) return null;
+
+  // Manejamos los estados de carga y error
+  if (userLoading || loading) return <p>Cargando...</p>;
+  if (userError) return <p>Error al cargar el género favorito: {userError.message}</p>;
+  if (error) return <p>Error al cargar los libros: {error.message}</p>;
+
+  // Libros recomendados
+  const recommendedBooks = data?.allBooks || [];
+
+  return (
+    <div>
+      <h2>Libros recomendados</h2>
+      <p>Género favorito: {favoriteGenre || 'No definido, por favor selecciona uno en tu perfil.'}</p>
+      {recommendedBooks.length > 0 ? (
+        <table>
+          <thead>
+            <tr>
+              <th>Título</th>
+              <th>Año de publicación</th>
+              <th>Autor</th>
+            </tr>
+          </thead>
+          <tbody>
+            {recommendedBooks.map(book => (
+              <tr key={book.id || `${book.title}-${book.published}`}>
                 <td>{book.title}</td>
                 <td>{book.published}</td>
                 <td>{book.author?.name || 'Autor desconocido'}</td>
