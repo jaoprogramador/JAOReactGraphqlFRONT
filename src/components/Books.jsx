@@ -6,7 +6,8 @@ const Books = ({ show }) => {
   // Ejecuta la consulta para obtener los libros
   const { loading, error, data } = useQuery(GET_BOOKS, { fetchPolicy: "cache-and-network" });
   const [selectedGenre, setSelectedGenre] = useState('all genres');
-
+  const token = localStorage.getItem('user-token');
+  console.log('Books:::token',token);
   useEffect(() => {
     console.log("books", data);
     // Agregar un console.log para depurar los datos

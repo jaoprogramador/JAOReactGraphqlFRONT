@@ -6,7 +6,8 @@ const Authors = ({ show }) => {
   /* if (!show) return null; */
 
   const { loading, error, data } = useQuery(GET_AUTHORS);
-
+  const token = localStorage.getItem('user-token');
+  console.log('Authors:::token',token);
   // Definir la mutación y actualizar la caché después de la mutación
   const [updateAuthor] = useMutation(UPDATE_AUTHOR, {
     update: (cache, { data: { updateAuthor } }) => {
