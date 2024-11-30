@@ -10,7 +10,7 @@ import { WebSocketLink } from '@apollo/client/link/ws';
 
 // Autenticación: Añadir el token en los encabezados
 const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem('phonenumbers-user-token');
+  const token = localStorage.getItem('user-token');
   return {
     headers: {
       ...headers,
