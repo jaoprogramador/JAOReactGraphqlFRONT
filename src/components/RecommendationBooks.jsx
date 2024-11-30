@@ -120,13 +120,13 @@ const RecommendationBooks = ({ show }) => {
   //if (!token) return <p>Error: Usuario no autenticado.</p>; // Maneja usuarios no autenticados
 
   const { data: userData, loading: userLoading, error: userError } = useQuery(GET_USER_FAVORITE_GENRE);
-
+  console.log('RecommendationBooks:::userData',userData);
   //if (userLoading) return <p>Cargando...</p>;
   //if (userError) return <p>Error al cargar el género favorito: {userError.message}</p>;
 
   const favoriteGenre = userData?.me?.favoriteGenre;
   //if (!favoriteGenre) return <p>No tienes un género favorito definido.</p>;
-
+  console.log('RecommendationBooks:::favoriteGenre',favoriteGenre);
   const { data: bookData, loading: bookLoading, error: bookError } = useQuery(GET_BOOKS_BY_GENRE, {
     variables: { genre: favoriteGenre },
     skip: !favoriteGenre, // Evita ejecutar la consulta si no hay género favorito
