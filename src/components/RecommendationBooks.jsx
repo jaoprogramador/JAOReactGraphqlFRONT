@@ -111,35 +111,35 @@ const RecommendationBooks = () => {
 
 export default RecommendationBooks; */
 import { useQuery } from '@apollo/client';
-import { GET_USER_FAVORITE_GENRE, GET_BOOKS_BY_GENRE } from '../graphql/queries';
+import { GET_BOOKS_BY_GENRE, GET_USER_FAVORITE_GENRE } from '../graphql/queries';
 
 const RecommendationBooks = ({ show }) => {
-  // Obtiene el género favorito del usuario
+  const token = localStorage.getItem('user-token');
+  if (!show) return null; // Solo renderiza si está visible
+  if (!token) return <p>Error: Usuario no autenticado.</p>; // Maneja usuarios no autenticados
+
   const { data: userData, loading: userLoading, error: userError } = useQuery(GET_USER_FAVORITE_GENRE);
-  
-  // Obtiene los libros según el género favorito
+
+  if (userLoading) return <p>Cargando...</p>;
+  if (userError) return <p>Error al cargar el género favorito: {userError.message}</p>;
+
   const favoriteGenre = userData?.me?.favoriteGenre;
-  const { data, loading, error } = useQuery(GET_BOOKS_BY_GENRE, {
+  if (!favoriteGenre) return <p>No tienes un género favorito definido.</p>;
+
+  const { data: bookData, loading: bookLoading, error: bookError } = useQuery(GET_BOOKS_BY_GENRE, {
     variables: { genre: favoriteGenre },
     skip: !favoriteGenre, // Evita ejecutar la consulta si no hay género favorito
-    fetchPolicy: "cache-and-network", // Para asegurar datos actualizados
   });
 
-  // Si la consulta no debe mostrarse
-  if (!show) return null;
+  if (bookLoading) return <p>Cargando libros...</p>;
+  if (bookError) return <p>Error al cargar libros: {bookError.message}</p>;
 
-  // Manejamos los estados de carga y error
-  if (userLoading || loading) return <p>Cargando...</p>;
-  if (userError) return <p>Error al cargar el género favorito: {userError.message}</p>;
-  if (error) return <p>Error al cargar los libros: {error.message}</p>;
-
-  // Libros recomendados
-  const recommendedBooks = data?.allBooks || [];
+  const recommendedBooks = bookData?.allBooks || [];
 
   return (
     <div>
       <h2>Libros recomendados</h2>
-      <p>Género favorito: {favoriteGenre || 'No definido, por favor selecciona uno en tu perfil.'}</p>
+      <p>Género favorito: {favoriteGenre}</p>
       {recommendedBooks.length > 0 ? (
         <table>
           <thead>
@@ -150,8 +150,8 @@ const RecommendationBooks = ({ show }) => {
             </tr>
           </thead>
           <tbody>
-            {recommendedBooks.map(book => (
-              <tr key={book.id || `${book.title}-${book.published}`}>
+            {recommendedBooks.map((book) => (
+              <tr key={book.id}>
                 <td>{book.title}</td>
                 <td>{book.published}</td>
                 <td>{book.author?.name || 'Autor desconocido'}</td>
