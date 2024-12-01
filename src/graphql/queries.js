@@ -70,6 +70,22 @@ export const ADD_BOOK = gql`
   }
 `;
 
+export const BOOKS_BY_FAVORITE_GENRE_LOGGED = gql`
+  query GetBooksByFavoriteGenre($token: String!) {
+    booksByFavoriteGenre(token: $token) {
+      id
+      title
+      published
+      genres
+      author {
+        name
+      }
+    }
+  }
+`;
+
+
+
 //SUBSCRIPCIONES
 //===============
 // Definir la suscripción para 'bookAdded'

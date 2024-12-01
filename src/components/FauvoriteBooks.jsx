@@ -1,4 +1,4 @@
-import React from 'react';
+/* import React from 'react';
 import { useQuery, gql } from '@apollo/client';
 
 // Consulta GraphQL para obtener el usuario actual
@@ -74,6 +74,38 @@ const FavoriteBooks = () => {
           ))}
         </tbody>
       </table>
+    </div>
+  );
+};
+
+export default FavoriteBooks;
+ */
+import React from 'react';
+import { useQuery } from '@apollo/client';
+import { BOOKS_BY_FAVORITE_GENRE_LOGGED } from '../graphql/queries';
+
+const FavoriteBooks = () => {
+  const { loading, error, data } = useQuery(BOOKS_BY_FAVORITE_GENRE_LOGGED);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
+  return (
+    <div>
+      <h2>Your Favorite Genre Books</h2>
+      {data.booksByFavoriteGenre.length === 0 ? (
+        <p>No books found for your favorite genre.</p>
+      ) : (
+        <ul>
+          {data.booksByFavoriteGenre.map((book) => (
+            <li key={book.id}>
+              <strong>{book.title}</strong> by {book.author.name} (Published: {book.published})
+              <br />
+              Genres: {book.genres.join(', ')}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };
