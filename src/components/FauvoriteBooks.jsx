@@ -85,8 +85,16 @@ import { useQuery } from '@apollo/client';
 import { BOOKS_BY_FAVORITE_GENRE_LOGGED } from '../graphql/queries';
 
 const FavoriteBooks = () => {
-  const { loading, error, data } = useQuery(BOOKS_BY_FAVORITE_GENRE_LOGGED);
-
+  const token = localStorage.getItem('user-token');
+  console.log('Authors:::token',token);
+  if (!token) {
+    return <p>No token found. Please log in again.</p>;
+  }
+  //const { loading, error, data } = useQuery(BOOKS_BY_FAVORITE_GENRE_LOGGED);
+  const { loading, error, data } = useQuery(BOOKS_BY_FAVORITE_GENRE_LOGGED, {
+    variables: { token }, // Aquí debes pasar el token
+  });
+  
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
