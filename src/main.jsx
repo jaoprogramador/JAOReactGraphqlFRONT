@@ -7,6 +7,19 @@ import { ApolloClient, ApolloProvider, HttpLink, InMemoryCache,
 import { setContext } from '@apollo/client/link/context';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { WebSocketLink } from '@apollo/client/link/ws';
+import { onError } from '@apollo/client/link/error';
+
+// Configura el link de error
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors) {
+    graphQLErrors.forEach(({ message, location, path }) => {
+      console.log(`[GraphQL error]: Message: ${message}, Location: ${location}, Path: ${path}`);
+    });
+  }
+  if (networkError) {
+    console.log(`[Network error]: ${networkError}`);
+  }
+});
 
 // Autenticación: Añadir el token en los encabezados
 const authLink = setContext((_, { headers }) => {
@@ -61,7 +74,7 @@ const splitLink = split(
 // Crear el cliente de Apollo con la configuración de enlaces
 const client = new ApolloClient({
   cache: new InMemoryCache(),  // Usar caché de Apollo
-  link: splitLink,  // Usar splitLink para manejar las suscripciones y las operaciones HTTP
+  link: errorLink.concat(httpLink),  // Usar splitLink para manejar las suscripciones y las operaciones HTTP
 }); 
 
 
