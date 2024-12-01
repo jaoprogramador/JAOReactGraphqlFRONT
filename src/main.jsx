@@ -11,6 +11,7 @@ import { WebSocketLink } from '@apollo/client/link/ws';
 // Autenticación: Añadir el token en los encabezados
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem('user-token');
+  console.log('Authorization Token:', token);
   return {
     headers: {
       ...headers,
@@ -21,12 +22,25 @@ const authLink = setContext((_, { headers }) => {
 
 // Configuración de WebSocketLink para suscripciones
 const wsLink = new WebSocketLink({
+  uri: `wss://jaoreactgraphql.onrender.com/graphql`,
+  options: {
+    reconnect: true,
+    connectionParams: () => {
+      const token = localStorage.getItem('user-token');
+      return {
+        authorization: token ? `Bearer ${token}` : null,
+      };
+    },
+  },
+});
+
+/* const wsLink = new WebSocketLink({
   //uri: `ws://localhost:4000/graphql`,  // Usar `wss://` para producción con HTTPS https://jaoreactgraphql.onrender.com
   uri: `wss://jaoreactgraphql.onrender.com/graphql`,
   options: {
     reconnect: true,
   },
-});
+}); */
 
 // Configuración de HTTPLink
 const httpLink = createHttpLink({
