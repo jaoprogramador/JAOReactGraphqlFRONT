@@ -58,9 +58,9 @@ const splitLink = split(
   authLink.concat(httpLink)  // Enviar todo lo demás a HTTP
 );
 
-// Crear el cliente de Apollo
+// Crear el cliente de Apollo con la configuración de enlaces
 const client = new ApolloClient({
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache(),  // Usar caché de Apollo
   link: splitLink,  // Usar splitLink para manejar las suscripciones y las operaciones HTTP
 }); 
 
