@@ -103,7 +103,7 @@ const NewBook = (props) => {
     <div>
       <form onSubmit={submit}>
         <div>
-          <label htmlFor="title">Title</label>
+          <label htmlFor="title">Título </label>
           <input
             id="title"
             value={title}
@@ -111,7 +111,7 @@ const NewBook = (props) => {
           />
         </div>
         <div>
-          <label htmlFor="author">Author</label>
+          <label htmlFor="author">Autor </label>
           <input
             id="author"
             value={author}
@@ -119,7 +119,7 @@ const NewBook = (props) => {
           />
         </div>
         <div>
-          <label htmlFor="published">Published</label>
+          <label htmlFor="published">Año Publicación </label>
           <input
             id="published"
             type="number"
@@ -128,24 +128,24 @@ const NewBook = (props) => {
           />
         </div>
         <div>
-          <label htmlFor="genre">Genre</label>
+          <label htmlFor="genre">Género </label>
           <input
             id="genre"
             value={genre}
             onChange={({ target }) => setGenre(target.value)}
           />
           <button onClick={addGenre} type="button">
-            Add Genre
+            Añadir Género 
           </button>
         </div>
-        <div>Genres: {genres.join(', ')}</div>
+        <div>Géneros: {genres.join(', ')}</div>
         <button type="submit" disabled={loading}>
-          {loading ? 'Adding Book...' : 'Create Book'}
+          {loading ? 'Añadiendo libro...' : 'Libro creado'}
         </button>
       </form>
 
       {errorMessage && <p style={{ color: 'red' }}>Error: {errorMessage}</p>}
-      {data && <p>Book "{data.addBook.title}" added successfully!</p>}
+      {data && <p>Book "{data.addBook.title}" alta OK!!!</p>}
     </div>
   );
 };

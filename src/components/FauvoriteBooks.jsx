@@ -100,16 +100,16 @@ const FavoriteBooks = () => {
 
   return (
     <div>
-      <h2>Your Favorite Genre Books</h2>
+      <h2>Tus libros favoritos por genero</h2>
       {data.booksByFavoriteGenre.length === 0 ? (
-        <p>No books found for your favorite genre.</p>
+        <p>No hay libros favoritos por genero.</p>
       ) : (
         <ul>
           {data.booksByFavoriteGenre.map((book) => (
             <li key={book.id}>
-              <strong>{book.title}</strong> by {book.author.name} (Published: {book.published})
+              <strong>{book.title}</strong> por {book.author.name} (Published: {book.published})
               <br />
-              Genres: {book.genres.join(', ')}
+              Géneros: {book.genres.join(', ')}
             </li>
           ))}
         </ul>

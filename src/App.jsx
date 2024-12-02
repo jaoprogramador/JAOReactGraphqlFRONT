@@ -30,11 +30,11 @@ const App = () => {
   return (
     <div>
       <div>
-      <button onClick={() => setPage("authors")}>authors</button>
-        <button onClick={() => setPage("books")}>books</button>
-        <button onClick={() => setPage("newBook")}>add book</button>
+      <button onClick={() => setPage("authors")}>Autores</button>
+        <button onClick={() => setPage("books")}>Libros</button>
+        <button onClick={() => setPage("newBook")}>Añadir Libro</button>
         {/* <button onClick={() => setPage("recomendations")}>recomendations</button> */}
-        <button onClick={() => setPage("favourite")}>favourite</button>
+        <button onClick={() => setPage("favourite")}>Genero Favorito</button>
         <button onClick={logout}>logout</button>
       </div>
       {token ? (

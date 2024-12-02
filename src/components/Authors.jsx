@@ -78,7 +78,7 @@ const Authors = ({ show }) => {
         </tbody>
       </table>
 
-      <h2>Set Birth Year</h2>
+      <h2>Introduce Año:</h2>
       <form onSubmit={handleUpdate}>
         <div>
           <label htmlFor="name">Seleccionar Autor:</label>
