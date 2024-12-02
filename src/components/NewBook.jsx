@@ -12,7 +12,9 @@ const NewBook = (props) => {
   const [genres, setGenres] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
 
-  
+  const token = localStorage.getItem('user-token');
+  console.log('NewBook:::token',token);
+
   // Hook useMutation para la mutación ADD_BOOK
   const [addBook, { loading, error, data }] = useMutation(ADD_BOOK, {
     onCompleted: () => {
