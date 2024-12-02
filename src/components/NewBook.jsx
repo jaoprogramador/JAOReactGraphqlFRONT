@@ -10,6 +10,7 @@ const NewBook = (props) => {
   const [published, setPublished] = useState('');
   const [genre, setGenre] = useState('');
   const [genres, setGenres] = useState([]);
+  const [errorMessage, setErrorMessage] = useState('');
 
   
   // Hook useMutation para la mutación ADD_BOOK
@@ -21,6 +22,7 @@ const NewBook = (props) => {
       setPublished('');
       setGenres([]);
       setGenre('');
+      
     },
     onError: (err) => {
       console.error(err);
@@ -41,7 +43,9 @@ const NewBook = (props) => {
    useSubscription(BOOK_ADDED, {
     onError: (error) => {
       console.log('SUBSCRIPTION FRONTERROR',error)
-      setError(error.graphQLErrors[0].message)
+      //setError(error.graphQLErrors[0].message)
+      setErrorMessage(error.graphQLErrors[0]?.message || 'An unknown error occurred');
+
     },
     onData: ({ data }) => {
       console.log('SUBSCRIPTION FRONT',data)
@@ -138,7 +142,7 @@ const NewBook = (props) => {
         </button>
       </form>
 
-      {error && <p style={{ color: 'red' }}>Error: {error.message}</p>}
+      {errorMessage && <p style={{ color: 'red' }}>Error: {errorMessage}</p>}
       {data && <p>Book "{data.addBook.title}" added successfully!</p>}
     </div>
   );
